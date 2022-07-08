@@ -1,0 +1,60 @@
+<div class="container">
+    <h1 *ngIf="prestamo.id == null">Crear prestamo</h1>
+    <h1 *ngIf="prestamo.id != null">Modificar prestamo</h1>
+
+    <form>
+        <mat-form-field>
+            <mat-label>Identificador</mat-label>
+            <input type="number" matInput placeholder="Identificador" [(ngModel)]="prestamo.id" name="id" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Nombre Juego</mat-label>
+            <mat-select disableRipple [(ngModel)]="prestamo.game" name="title" required>
+                <mat-option *ngFor="let game of games" [value]="game">{{game.title}}</mat-option>
+            </mat-select>
+            <mat-error>El nombre no puede estar vacío</mat-error>
+        </mat-form-field>
+    
+        <mat-form-field>
+            <mat-label>Cliente</mat-label>
+            <mat-select disableRipple [(ngModel)]="prestamo.client" name="name" required>
+                <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
+            </mat-select>            
+            <mat-error>El cliente no puede estar vacío</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha Inicio</mat-label>
+            <input type="text" matInput placeholder="Fecha de Inicio" [(ngModel)]="prestamo.fechaIn" name="fechaIn" required>
+            <mat-error>La fecha no puede estar vacia</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha Fin</mat-label>
+            <input type="text" matInput placeholder="Fecha de Fin" [(ngModel)]="prestamo.fechaOut" name="fechaOut" required>
+            <mat-error>La fecha no puede estar vacia</mat-error>
+        </mat-form-field>
+    </form>
+
+    <div class="error"  *ngIf="validarFechas(prestamo)==false">
+        <h4>La fecha de entrada no puede ser mayor a la fecha de salida</h4>
+    </div>
+
+    <div class="error"  *ngIf="validarDiasPrestado(prestamo)==false">
+        <h4>El juego no puede prestarse por más de 14 dias</h4>
+    </div>
+
+    <div class="error"  *ngIf="resultsGame==false">
+        <h4>El juego ya está prestado en esas fechas</h4>
+    </div>
+
+    <div class="error"  *ngIf="resultsClient==false">
+        <h4>El cliente no puede tener más de dos juegos prestados en esas fechas</h4>
+    </div>
+
+    <div class="buttons">
+        <button mat-stroked-button (click)="onClose()">Cerrar</button>
+        <button mat-flat-button color="primary" (click)="comprobarJuegoEnUnDia(prestamo)">Guardar</button>
+    </div>
+</div>
